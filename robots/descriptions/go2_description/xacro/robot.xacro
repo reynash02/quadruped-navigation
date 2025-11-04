@@ -13,6 +13,8 @@
 
     <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro"/>
 
+
+
     <xacro:include filename="$(find go2_description)/xacro/camera_gazebo.xacro"/>
 
 
