@@ -33,3 +33,13 @@ ros2 launch rtabmap_launch rtabmap.launch.py \
 ros2 launch rtabmap_launch rtabmap.launch.py     localization:=true     rtabmap_args:="--Mem/IncrementalMemory false --Mem/InitWMWithAllNodes true"     rgb_topic:=/camera/color/image_raw     depth_topic:=/camera/aligned_depth_to_color/image_raw     camera_info_topic:=/camera/color/camera_info     depth_camera_info_topic:=/camera/aligned_depth_to_color/camera_info     frame_id:=base_link     approx_sync:=true     wait_imu_to_init:=false     imu_topic:=/imu/data     odom_topic:=/odom     visual_odometry:=false     odom_frame_id:=odom     publish_tf:=true     use_sim_time:=true
 
 rtabmap-databaseViewer ~/.ros/rtabmap.db
+
+
+ros2 launch rtabmap_ros rtabmap.launch.py \
+ args:="--delete_db_on_start" \
+ depth_topic:=/camera/aligned_depth_to_color/image_raw \
+ rgb_topic:=/camera/color/image_raw \
+ camera_info_topic:=/camera/color/camera_info \
+ approx_sync:=false \
+ frame_id:=camera_link \
+ use_sim_time:=true
