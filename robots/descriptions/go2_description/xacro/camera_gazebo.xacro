@@ -27,7 +27,7 @@
         </camera>
         <always_on>1</always_on>
         <update_rate>60</update_rate>
-        <visualize>0</visualize>
+        <visualize>1</visualize>
       </sensor>
       
       <!-- Color Camera Sensor -->
@@ -124,7 +124,7 @@
         <infrared2OpticalframeName>${camera_name}_infra2_optical_frame</infrared2OpticalframeName>
         <rangeMinDepth>0.3</rangeMinDepth>
         <rangeMaxDepth>3.0</rangeMaxDepth>
-        <pointCloud>false</pointCloud>
+        <pointCloud>true</pointCloud>
         <pointCloudTopicName>depth/color/points</pointCloudTopicName>
         <pointCloudCutoff>0.5</pointCloudCutoff>
       </plugin>

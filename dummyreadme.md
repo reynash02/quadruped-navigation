@@ -65,3 +65,17 @@ ros2 launch go2_config rtabmap.launch.py \
   approx_sync_max_interval:=0.1 \
   topic_queue_size:=30 \
   sync_queue_size:=30
+
+
+
+  ros2 launch go2_config rtabmap.launch.py   rgb_topic:=/camera/color/image_raw   depth_topic:=/camera/aligned_depth_to_color/image_raw   camera_info_topic:=/camera/color/camera_info   frame_id:=base_link   rviz:=false   visual_odometry:=true   icp_odometry:=false   approx_sync:=true   use_sim_time:=true   imu_topic:=/imu/data   args:='--delete_db_on_start'   approx_sync_max_interval:=0.1   topic_queue_size:=30   sync_queue_size:=30
+
+
+ros2 launch go2_config rtabmap.launch.py   rgb_topic:=/camera/color/image_raw   depth_topic:=/camera/aligned_depth_to_color/image_raw   camera_info_topic:=/camera/color/camera_info   frame_id:=base_link   odom_frame_id:=odom   publish_tf:=true   rviz:=false   visual_odometry:=true   icp_odometry:=false   approx_sync:=true   use_sim_time:=true   wait_for_transform:=0.2   rtabmap_args:='--delete_db_on_start'   approx_sync_max_interval:=0.1   queue_size:=30
+
+
+
+ ros2 launch go2_config rtabmap.launch.py   rgb_topic:=/camera/color/image_raw   depth_topic:=/camera/aligned_depth_to_color/image_raw   camera_info_topic:=/camera/color/camera_info   frame_id:=base_link   odom_frame_id:=odom   publish_tf_odom:=false   publish_tf_map:=true   rviz:=false   visual_odometry:=true   icp_odometry:=false   odom_topic:=/odom   vo_frame_id:=odom_visual   approx_sync:=true   use_sim_time:=true   wait_for_transform:=0.2   rtabmap_args:='--delete_db_on_start'   approx_sync_max_interval:=0.1   queue_size:=30   imu_topic:=/imu/data
+
+
+ ros2 launch go2_config rtabmap.launch.py   rgb_topic:=/camera/color/image_raw   depth_topic:=/camera/aligned_depth_to_color/image_raw   camera_info_topic:=/camera/color/camera_info   frame_id:=base_link   odom_frame_id:=odom   publish_tf_odom:=false   publish_tf_map:=true   rviz:=false   visual_odometry:=true   icp_odometry:=false   odom_topic:=/odom   vo_frame_id:=odom_visual   approx_sync:=true   use_sim_time:=true   wait_for_transform:=0.2   localization:=true   approx_sync_max_interval:=0.1   queue_size:=30   imu_topic:=/imu/data
