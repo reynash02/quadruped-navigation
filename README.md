@@ -42,6 +42,9 @@ cd ~/go2_ws
 colcon build
 source install/setup.bash
 ```
+
+---
+
 ## 2. Quick Start
 
 ### 2.1 Start Simulation
@@ -52,11 +55,17 @@ ros2 launch go2_config gazebo.launch.py rviz:=true
 
 ### 2.2 Mapping
 ```bash
-ros2 launch rtabmap_launch rtabmap.launch.py     rtabmap_args:="--delete_db_on_start"     rgb_topic:=/camera/color/image_raw     depth_topic:=/camera/aligned_depth_to_color/image_raw     camera_info_topic:=/camera/color/camera_info     depth_camera_info_topic:=/camera/depth/camera_info     frame_id:=base_link     approx_sync:=true     wait_imu_to_init:=false     imu_topic:=/imu/data     odom_topic:=/odom     visual_odometry:=true     odom_frame_id:=odom     publish_tf:=true     use_sim_time:=true     Rtabmap/DetectionRate:=1.0     Mem/IncrementalMemory:=true     Mem/InitWMWithAllNodes:=false
+ros2 launch go2_config rtabmap.launch.py     rtabmap_args:="--delete_db_on_start"     rgb_topic:=/camera/color/image_raw     depth_topic:=/camera/aligned_depth_to_color/image_raw     camera_info_topic:=/camera/color/camera_info     depth_camera_info_topic:=/camera/depth/camera_info     frame_id:=base_link     approx_sync:=true     wait_imu_to_init:=false     imu_topic:=/imu/data     odom_topic:=/odom     visual_odometry:=true     odom_frame_id:=odom     publish_tf:=true     use_sim_time:=true     Rtabmap/DetectionRate:=1.0     Mem/IncrementalMemory:=true     Mem/InitWMWithAllNodes:=false
 ```
+
+This launch file does the following:
+1. Deletes previous map and starts SLAM with visual odometry
+2. Fuses robot odometry with visual odometry and IMU data
+3. Publishes tf between odom and base link enabling robot position to be tracked
+
 ![Go2 Mapping Launch](.docs/rtab_map.png)
 
-- [Mapping Link ](https://www.youtube.com/watch?v=Op1uhe4yMic) 
+[Mapping Link ](https://www.youtube.com/watch?v=Op1uhe4yMic) 
 
 
 
@@ -67,17 +76,48 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 ### 2.4 Localization
 ```bash
-ros2 launch go2_config gazebo_velodyne.launch.py 
+ros2 launch rtabmap_launch rtabmap.launch.py     rgb_topic:=/camera/color/image_raw     depth_topic:=/camera/aligned_depth_to_color/image_raw     camera_info_topic:=/camera/color/camera_info     depth_camera_info_topic:=/camera/depth/camera_info     frame_id:=base_link     approx_sync:=true     wait_imu_to_init:=false     imu_topic:=/imu/data     odom_topic:=/odom     visual_odometry:=true     odom_frame_id:=odom     publish_tf:=true     use_sim_time:=true     Rtabmap/DetectionRate:=1.0     Mem/IncrementalMemory:=false     Mem/InitWMWithAllNodes:=true localization:=true  rtabmap_viz:=false
 ```
+
+(Optional) You can keep rtabmap_viz as true
+
 ![Go2 Localization Launch](.docs/map_prob_grid.png)
 
+[Localization Link ](https://www.youtube.com/watch?v=s99teAG4q-U)
+
 ### 2.5 Navigation
+
+NOTE: Change rviz fixed frame to Map.
+
 ```bash
-ros2 launch go2_config gazebo_velodyne.launch.py rviz:=true
+ros2 launch nav2_bringup navigation_launch.py params_file:=src/robots/descriptions/go2_description/config/nav2_params.yaml 
 ```
 
-![Go2 Navigation Launch](.docs/gazebo_velodyne_rviz_launch.png)
 
+To give a single goal: Click on 2D Goal Pose in Rviz and the robot will plan a path and go there
+To give multiple goals (Eg: Waypoint Following): 
+
+```bash
+ros2 action send_goal /follow_waypoints nav2_msgs/action/FollowWaypoints "
+poses:
+  - header:
+      frame_id: 'map'
+    pose:
+      position: {x: 1.0, y: 1.0, z: 0.0}
+      orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}
+  - header:
+      frame_id: 'map'
+    pose:
+      position: {x: 2.0, y: 2.0, z: 0.0}
+      orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}
+"
+```
+
+![Go2 Navigation Launch](.docs/navigation.png)
+
+[Localization Link ](https://www.youtube.com/watch?v=-PzVzCM6_YI)
+
+---
 
 ## Troubleshooting:
 1. During localization and mapping, ensure the rviz fixed_frame is map.
@@ -86,6 +126,9 @@ ros2 launch go2_config gazebo_velodyne.launch.py rviz:=true
   angular velocity ~ 1.8 to 3.5
 3. Ensure the RMW middleware used is rmw_fastrtps_cpp. If not:
 export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+4. If map does not load automatically during localization, uncheck and check the Map in display to reload it.
+5. To use a preloaded map, choose map destination as go2_ws/src/db/rtabmap.db
+6. If you get a syncing error, ensure ```use_sim_time=true``` for all nodes
 
 
 ## Resources:
