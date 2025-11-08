@@ -1,6 +1,6 @@
 amcl:
   ros__parameters:
-    use_sim_time: false
+    use_sim_time: true
     alpha1: 0.2
     alpha2: 0.2
     alpha3: 0.2
@@ -41,7 +41,7 @@ amcl:
 
 bt_navigator:
   ros__parameters:
-    use_sim_time: false
+    use_sim_time: true
     global_frame: map
     robot_base_frame: base_link
     odom_topic: /odom
@@ -105,7 +105,7 @@ bt_navigator:
 
 controller_server:
   ros__parameters:
-    use_sim_time: false
+    use_sim_time: true
     controller_frequency: 20.0
     min_x_velocity_threshold: 0.001
     min_y_velocity_threshold: 0.0
@@ -176,7 +176,7 @@ local_costmap:
       publish_frequency: 2.0
       global_frame: odom
       robot_base_frame: base_link
-      use_sim_time: false
+      use_sim_time: true
       rolling_window: true
       width: 3
       height: 3
@@ -186,7 +186,7 @@ local_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 3.0
-        inflation_radius: 0.55
+        inflation_radius: 0.1
       voxel_layer:
         plugin: "nav2_costmap_2d::VoxelLayer"
         enabled: true
@@ -195,11 +195,13 @@ local_costmap:
         z_resolution: 0.05
         z_voxels: 16
         max_obstacle_height: 2.0
+        min_obstacle_height: 0.15
         mark_threshold: 0
         observation_sources: pointcloud
         pointcloud:
           topic: /camera/depth/color/points
           max_obstacle_height: 2.0
+          min_obstacle_height: 0.15
           clearing: true
           marking: true
           data_type: "PointCloud2"
@@ -219,7 +221,7 @@ global_costmap:
       publish_frequency: 1.0
       global_frame: map
       robot_base_frame: base_link
-      use_sim_time: false
+      use_sim_time: true
       robot_radius: 0.22
       resolution: 0.05
       track_unknown_space: true
@@ -231,6 +233,7 @@ global_costmap:
         pointcloud:
           topic: /camera/depth/color/points
           max_obstacle_height: 2.0
+          min_obstacle_height: 0.15
           clearing: true
           marking: true
           data_type: "PointCloud2"
@@ -245,13 +248,13 @@ global_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 3.0
-        inflation_radius: 0.55
+        inflation_radius: 0.1
       always_send_full_costmap: true
 
 planner_server:
   ros__parameters:
     expected_planner_frequency: 20.0
-    use_sim_time: false
+    use_sim_time: true
     planner_plugins: ["GridBased"]
     GridBased:
       plugin: "nav2_navfn_planner/NavfnPlanner"
@@ -261,7 +264,7 @@ planner_server:
 
 smoother_server:
   ros__parameters:
-    use_sim_time: false
+    use_sim_time: true
     smoother_plugins: ["simple_smoother"]
     simple_smoother:
       plugin: "nav2_smoother::SimpleSmoother"
@@ -288,7 +291,7 @@ behavior_server:
     global_frame: odom
     robot_base_frame: base_link
     transform_tolerance: 0.1
-    use_sim_time: false
+    use_sim_time: true
     simulate_ahead_time: 2.0
     max_rotational_vel: 1.0
     min_rotational_vel: 0.4
@@ -296,11 +299,11 @@ behavior_server:
 
 robot_state_publisher:
   ros__parameters:
-    use_sim_time: false
+    use_sim_time: true
 
 waypoint_follower:
   ros__parameters:
-    use_sim_time: false
+    use_sim_time: true
     loop_rate: 20
     stop_on_failure: false
     waypoint_task_executor_plugin: "wait_at_waypoint"
@@ -311,7 +314,7 @@ waypoint_follower:
 
 velocity_smoother:
   ros__parameters:
-    use_sim_time: false
+    use_sim_time: true
     smoothing_frequency: 20.0
     scale_velocities: false
     feedback: "OPEN_LOOP"
@@ -326,7 +329,7 @@ velocity_smoother:
 
 collision_monitor:
   ros__parameters:
-    use_sim_time: false
+    use_sim_time: true
     base_frame_id: "base_link"
     odom_frame_id: "odom"
     cmd_vel_in_topic: "cmd_vel_smoothed"
